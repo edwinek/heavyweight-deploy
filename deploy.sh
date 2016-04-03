@@ -1,4 +1,4 @@
-#! /usr/bin/sh
+#! /bin/bash
 
 if [ ! -d getter ]; then
 	mkdir getter
