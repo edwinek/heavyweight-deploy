@@ -4,10 +4,11 @@ A hacky script for running a dockerised version of "heavyweight".
 ## Deploy
 * `chmod +x deploy.sh`
 * Run the `deploy.sh` script
-    * this will deploy the service to a container, accessible at: `http://localhost:8888/heavyweight`
+    * this will deploy the service to container, listening on port `8888`
 
 ## Useage
-* `/query?date=yyyy-mm-dd`
+* Service will deploy to `http://localhost:8888/heavyweight`
+* Resource (GET): `/query?date=yyyy-mm-dd`
     * to query by date
-* `/update`
+* Resource (GET): `/update`
     * to update the database
