@@ -7,7 +7,7 @@ fi
 touch getter/Dockerfile
 
 cat > getter/Dockerfile <<EOL
-FROM debian:8
+FROM debian:8.4
 
 RUN apt-get -y update && apt-get install -y git
 RUN git clone https://github.com/edwinek/heavyweight.git 
@@ -22,7 +22,7 @@ fi
 touch builder/Dockerfile
 
 cat > builder/Dockerfile <<EOL
-FROM debian:8
+FROM debian:8.4
 
 RUN apt-get -y update && apt-get install -y maven openjdk-7-jdk
 ADD src.tar /opt/src
@@ -37,7 +37,7 @@ fi
 touch deployer/Dockerfile
 
 cat > deployer/Dockerfile <<EOL
-FROM tomcat:8-jre7
+FROM tomcat:80.33-jre7
 
 RUN apt-get -y update && apt-get install -y mongodb
 ADD heavyweight.war /usr/local/tomcat/webapps/heavyweight.war
