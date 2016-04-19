@@ -37,7 +37,7 @@ fi
 touch deployer/Dockerfile
 
 cat > deployer/Dockerfile <<EOL
-FROM tomcat:80.33-jre7
+FROM tomcat:8.0.33-jre7
 
 RUN apt-get -y update && apt-get install -y mongodb
 ADD heavyweight.war /usr/local/tomcat/webapps/heavyweight.war
