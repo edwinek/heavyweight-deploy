@@ -1,6 +1,6 @@
 #! /bin/bash
 
-function cleanup() {
+function cleanup_files() {
 	for FILES_TO_DELETE in builder/* getter/* deployer/*
 	do
 		if [ -f $FILES_TO_DELETE ]; then
@@ -15,6 +15,12 @@ function cleanup() {
 	done
 }
 
+function cleanup_containers() {
+	docker rm getter_container
+	docker rm builder_container
+	docker rm deployer_container
+}
+
 function create() {
 	for DIR_TO_CREATE in builder getter deployer
 	do
@@ -23,7 +29,8 @@ function create() {
 	done
 }
 
-cleanup
+cleanup_containers
+cleanup_files
 create
 
 FILENAME=git-clone-$(date -u +"%Y%m%d%H%M%S").sh
@@ -75,19 +82,20 @@ service mongodb start && catalina.sh run
 EOL
 
 
-docker build -t getter getter/.
-docker run -d getter tail -f /dev/null
-docker cp $(docker ps -q):/tmp/src.tar builder/src.tar
-docker stop $(docker ps -q)
+docker build -t getter_image getter/.
+docker run --name getter_container -d getter_image tail -f /dev/null
+docker cp getter_container:/tmp/src.tar builder/src.tar
+docker stop getter_container 
 
-docker build -t builder builder/.
-docker run -d builder tail -f /dev/null
-docker cp $(docker ps -q):/opt/src/target/heavyweight.war deployer/heavyweight.war
-docker stop $(docker ps -q)
+docker build -t builder_image builder/.
+docker run --name builder_container -d builder_image tail -f /dev/null
+docker cp builder_container:/opt/src/target/heavyweight.war deployer/heavyweight.war
+docker stop builder_container
 
-docker build -t deployer deployer/.
+docker build -t deployer_image deployer/.
 
-cleanup
+cleanup_files
 
-docker run -it --rm -p 8888:8080 deployer
+docker run --name deployer_container -it -p 8888:8080 deployer_image
 
+cleanup_containers
