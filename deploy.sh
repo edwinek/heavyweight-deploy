@@ -16,8 +16,7 @@ function cleanup_containers_and_files() {
 
 cleanup_containers_and_files
 
-docker build -t getter_image getter/.
-docker run --name getter_container -d getter_image
+docker run --name getter_container -d edwinek/alpine-git:latest
 docker exec -ti getter_container git clone $PROJECT_URL /opt/src/$PROJECT_NAME
 docker exec -ti getter_container sh -c "cd /opt/src/$PROJECT_NAME && git archive -o /tmp/$SRC_ARCHIVE master"
 docker cp getter_container:/tmp/$SRC_ARCHIVE builder/$SRC_ARCHIVE
