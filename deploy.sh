@@ -24,7 +24,7 @@ docker stop getter_container
 
 docker build -t builder_image builder/.
 docker run --name builder_container -tid builder_image sh
-docker cp builder_container:/opt/src/target/$WAR_FILE deployer/$WAR_FILE
+docker cp builder_container:/opt/src/build/libs/$WAR_FILE deployer/$WAR_FILE
 docker stop builder_container
 
 docker build -t deployer_image deployer/.
